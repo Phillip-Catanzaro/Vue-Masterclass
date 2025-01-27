@@ -2,7 +2,6 @@
 
 <template>
   <div>
-    <h1>Projects</h1>
-    <RouterLink to="/"> Go to Home </RouterLink>
+    <h1>404 Not Found</h1>
   </div>
 </template>

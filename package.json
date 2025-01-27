@@ -15,15 +15,18 @@
     "supabase:login": "supabase login",
     "supabase:link": "supabase link --project-ref zjrzldajzkeozzpfqivo",
     "db:migrate:new": "supabase migration new projects-schema",
-    "db:reset": "supabase db reset --linked"
+    "db:reset": "supabase db reset --linked",
+    "db:seed": "node --env-file=.env database/seed.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.43.4",
+    "dotenv": "^16.4.7",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/node": "^22.10.2",
     "@vitejs/plugin-vue": "^5.2.1",
@@ -36,6 +39,7 @@
     "prettier": "^3.4.2",
     "supabase": "^2.2.1",
     "typescript": "~5.7.2",
+    "unplugin-vue-router": "^0.11.2",
     "vite": "^6.0.3",
     "vite-plugin-vue-devtools": "^7.6.8",
     "vue-tsc": "^2.1.10"
