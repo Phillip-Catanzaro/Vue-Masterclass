@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { supabase } from '@/lib/supabaseClient'
-
-console.log(supabase)
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <main>
+  <AuthLayout>
     <RouterView />
-  </main>
+  </AuthLayout>
 </template>
