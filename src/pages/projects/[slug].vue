@@ -17,9 +17,9 @@ const getProjects = async () => {
   const slug = Array.isArray(route.params.slug)
     ? route.params.slug[0]
     : route.params.slug
-  const { data, error } = await projectQuery(slug)
+  const { data, error, status } = await projectQuery(slug)
 
-  if (error) console.log(error)
+  if (error) useErrorStore().setError({ error, customCode: status })
 
   project.value = data
 }
