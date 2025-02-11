@@ -65,10 +65,10 @@ const table = useVueTable({
 
 <style scoped>
 td {
-  @apply p-0;
+  padding: 0;
 }
 
 td > * {
-  @apply p-4;
+  padding: 1rem; /* Assuming p-4 translates to 1rem */
 }
 </style>
