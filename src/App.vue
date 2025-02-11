@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
+const errorStore = useErrorStore()
+
+onErrorCaptured((error) => {
+  errorStore.setError({ error })
+})
+
 const { activeError } = storeToRefs(useErrorStore())
 </script>
 

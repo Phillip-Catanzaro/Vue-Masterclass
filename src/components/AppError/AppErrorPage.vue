@@ -20,59 +20,45 @@ if (error.value && !('code' in error.value)) {
 if (error.value && 'code' in error.value) {
   message.value = error.value.message
   details.value = error.value.details
-  code.value = error.value.code
   hint.value = error.value.hint
+  code.value = error.value.code
   statusCode.value = error.value.statusCode ?? 0
 }
 
+const ErrorTemplate = import.meta.env.DEV
+  ? defineAsyncComponent(() => import('./AppErrorDevSection.vue'))
+  : defineAsyncComponent(() => import('./AppErrorProdSection.vue'))
+
 router.afterEach(() => {
-  errorStore.activeError = null
+  errorStore.clearError()
 })
 </script>
 
 <template>
-  <section
-    class="error mx-auto flex justify-center items-center flex-1 p-10 text-center -mt-20 min-h-[90vh]"
-  >
-    <div>
-      <iconify-icon
-        icon="lucide:triangle-alert"
-        class="error__icon text-7xl text-destructive"
-      />
-      <h1 class="error__code font-extrabold text-7xl text-secondary">
-        {{ customCode || code }}
-      </h1>
-      <p
-        class="error__code font-extrabold text-7xl text-secondary"
-        v-if="statusCode"
-      >
-        Status Code: {{ statusCode }}
-      </p>
-      <p class="error__msg text-3xl font-extrabold text-primary">
-        {{ message }}
-      </p>
-      <p class="error__msg text-3xl font-extrabold text-primary" v-if="hint">
-        {{ hint }}
-      </p>
-      <p class="error__msg text-3xl font-extrabold text-primary" v-if="details">
-        {{ details }}
-      </p>
-      <div
-        class="error-footer flex flex-col items-center justify-center gap-5 mt-6 font-light"
-      >
-        <p class="error-footer__text text-lg text-muted-foreground">
-          You'll find lots to explore on the home page.
-        </p>
-        <RouterLink to="/">
-          <Button class="max-w-36"> Back to homepage </Button>
-        </RouterLink>
-      </div>
-    </div>
+  <section class="error">
+    <ErrorTemplate
+      :message
+      :customCode
+      :code
+      :statusCode
+      :hint
+      :details
+      :isCustomError="errorStore.isCustomError"
+    />
   </section>
 </template>
 
 <style scoped>
 p {
   margin: 0.5rem 0;
+}
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+  min-height: 90vh;
 }
 </style>
