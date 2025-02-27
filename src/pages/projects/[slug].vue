@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { projectQuery } from '@/utils/supaQueries'
-import type { Project } from '@/utils/supaQueries'
+import { useCollabs } from '@/composables/collabs'
+import { useProjectsStore } from '@/stores/loaders/projects'
 
-const route = useRoute('/projects/[slug]')
+const { slug } = useRoute('/projects/[slug]').params
+const slugVar = ref(Array.isArray(slug) ? slug[0] : slug)
 
-const project = ref<Project | null>(null)
+const projectsLoader = useProjectsStore()
+const { project } = storeToRefs(projectsLoader)
+const { getProject, updateProject } = projectsLoader
 
 watch(
   () => project.value?.name,
@@ -13,35 +16,39 @@ watch(
   }
 )
 
-const getProjects = async () => {
-  const slug = Array.isArray(route.params.slug)
-    ? route.params.slug[0]
-    : route.params.slug
-  const { data, error, status } = await projectQuery(slug)
+await getProject(slugVar.value)
 
-  if (error) useErrorStore().setError({ error, customCode: status })
-
-  project.value = data
-}
-
-await getProjects()
+const { getProfileByIds } = useCollabs()
+const collabs = project.value?.collaborators
+  ? await getProfileByIds(project.value.collaborators)
+  : []
 </script>
 
 <template>
   <Table v-if="project">
     <TableRow>
       <TableHead> Name </TableHead>
-      <TableCell> {{ project.name }}. </TableCell>
+      <TableCell>
+        <AppInPlaceEdit v-model="project.name" @commit="updateProject" />
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableHead> Description </TableHead>
       <TableCell>
-        {{ project.description }}
+        <AppInPlaceEditTextArea
+          v-model="project.description"
+          @commit="updateProject"
+        />
       </TableCell>
     </TableRow>
     <TableRow>
       <TableHead> Status </TableHead>
-      <TableCell> {{ project.status }} </TableCell>
+      <TableCell>
+        <AppInPlaceEditStatus
+          v-model="project.status"
+          @commit="updateProject"
+        />
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableHead> Collaborators </TableHead>
@@ -49,14 +56,17 @@ await getProjects()
         <div class="flex">
           <Avatar
             class="-mr-4 border border-primary hover:scale-110 transition-transform"
-            v-for="collab in project.collaborators"
-            :key="collab"
+            v-for="collab in collabs"
+            :key="collab.id"
           >
             <RouterLink
               class="w-full h-full flex items-center justify-center"
-              to=""
+              :to="{
+                name: '/users/[username]',
+                params: { username: collab.username }
+              }"
             >
-              <AvatarImage src="" alt="" />
+              <AvatarImage :src="collab.avatar_url || ''" alt="" />
               <AvatarFallback> </AvatarFallback>
             </RouterLink>
           </Avatar>
@@ -82,8 +92,20 @@ await getProjects()
           </TableHeader>
           <TableBody>
             <TableRow v-for="task in project.tasks" :key="task.id">
-              <TableCell> Lorem ipsum dolor sit amet. </TableCell>
-              <TableCell> In progress </TableCell>
+              <TableCell class="p-0">
+                <RouterLink
+                  class="text-left block hover:bg-muted p-4"
+                  :to="{ name: '/tasks/[id]', params: { id: task.id } }"
+                >
+                  {{ task.name }}
+                </RouterLink>
+              </TableCell>
+              <TableCell>
+                <AppInPlaceEditStatus
+                  readonly
+                  :modelValue="task.status"
+                ></AppInPlaceEditStatus>
+              </TableCell>
               <TableCell> 22/08/2024 </TableCell>
             </TableRow>
           </TableBody>

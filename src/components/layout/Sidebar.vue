@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
+
+useAuthStore()
 const links = [
   { icon: 'lucide:house', title: 'Dashboard', to: '/' },
   { icon: 'lucide:building-2', title: 'Projects', to: '/projects' },
@@ -8,8 +11,18 @@ const links = [
 const accountLinks = [
   { icon: 'lucide:user', title: 'Profile', to: '/profile' },
   { icon: 'lucide:settings', title: 'Settings', to: '/settings' },
-  { icon: 'lucide:log-out', title: 'Sign out', to: '/signout' }
+  { icon: 'lucide:log-out', title: 'Sign out' }
 ]
+
+const router = useRouter()
+
+const executeAction = async (linkTitle: string) => {
+  if (linkTitle === 'Sign out') {
+    const { logout } = await import('@/utils/tableColumns/supaAuth')
+    const isLoggedOut = await logout()
+    if (isLoggedOut) router.push('/login')
+  }
+}
 </script>
 
 <template>
@@ -33,7 +46,7 @@ const accountLinks = [
         <SideBarLinks :links="links" />
       </div>
       <div class="border-y text-center bg-background py-3">
-        <SideBarLinks :links="accountLinks" />
+        <SideBarLinks :links="accountLinks" @actionClicked="executeAction" />
       </div>
     </nav>
   </aside>

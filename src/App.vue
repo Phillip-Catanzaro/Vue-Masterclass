@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { useAuthStore } from './stores/auth'
 
 const errorStore = useErrorStore()
 
 onErrorCaptured((error) => {
   errorStore.setError({ error })
+})
+
+onMounted(() => {
+  useAuthStore().trackAuthChanges()
 })
 
 const { activeError } = storeToRefs(useErrorStore())
