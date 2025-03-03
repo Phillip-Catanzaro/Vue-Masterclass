@@ -2,13 +2,13 @@ import { supabase } from '@/lib/supabaseClient'
 import type { QueryData } from '@supabase/supabase-js'
 
 export const tasksWithProjectsQuery = supabase.from('tasks').select(`
-    *,
-    projects (
-      id,
-      name,
-      slug
-    )
-  `)
+  *,
+  projects (
+    id,
+    name,
+    slug
+  )
+`)
 export type TasksWithProjects = QueryData<typeof tasksWithProjectsQuery>
 
 export const projectsQuery = supabase.from('projects').select()
@@ -37,10 +37,6 @@ export const updateProjectQuery = (updatedProject = {}, id: number) => {
   return supabase.from('projects').update(updatedProject).eq('id', id)
 }
 
-export const updateTaskQuery = (updatedTask = {}, id: number) => {
-  return supabase.from('tasks').update(updatedTask).eq('id', id)
-}
-
 export const taskQuery = (id: string) => {
   return supabase
     .from('tasks')
@@ -58,6 +54,10 @@ export const taskQuery = (id: string) => {
     .single()
 }
 export type Task = QueryData<ReturnType<typeof taskQuery>>
+
+export const updateTaskQuery = (updatedTask = {}, id: number) => {
+  return supabase.from('tasks').update(updatedTask).eq('id', id)
+}
 
 export const profileQuery = ({
   column,

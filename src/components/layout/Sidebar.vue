@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
+const { profile } = storeToRefs(useAuthStore())
 
 useAuthStore()
 const links = [
@@ -8,11 +9,19 @@ const links = [
   { icon: 'lucide:badge-check', title: 'My Tasks', to: '/tasks' }
 ]
 
-const accountLinks = [
-  { icon: 'lucide:user', title: 'Profile', to: '/profile' },
-  { icon: 'lucide:settings', title: 'Settings', to: '/settings' },
-  { icon: 'lucide:log-out', title: 'Sign out' }
-]
+const accountLinks = computed(() => {
+  return [
+    {
+      title: 'Profile',
+      to: `/users/${profile.value?.username}`,
+      icon: 'lucide:user'
+    },
+    {
+      title: 'Sign Out',
+      icon: 'lucide:log-out'
+    }
+  ]
+})
 
 const router = useRouter()
 

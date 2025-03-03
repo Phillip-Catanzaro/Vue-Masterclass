@@ -4,7 +4,7 @@ import { useTasksStore } from '@/stores/loaders/tasks'
 import { usePageStore } from '@/stores/page'
 import { columns } from '@/utils/tableColumns/tasksColumns'
 
-usePageStore().pageData.title = 'Tasks'
+usePageStore().pageData.title = 'My Tasks'
 
 const tasksLoader = useTasksStore()
 const { tasks } = storeToRefs(tasksLoader)
@@ -14,11 +14,9 @@ await getTasks()
 
 const { getGroupedCollabs, groupedCollabs } = useCollabs()
 
-await getGroupedCollabs(tasks.value ?? [])
+getGroupedCollabs(tasks.value ?? [])
 
 const columnsWithCollabs = columns(groupedCollabs)
-
-await getTasks()
 </script>
 
 <template>

@@ -1,8 +1,10 @@
+import { RouterLink } from 'vue-router'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { Projects } from '../supaQueries'
-import { RouterLink } from 'vue-router'
+import type { Ref } from 'vue'
 import type { GroupedCollabs } from '@/types/GroupCollabs'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import Avatar from '@/components/ui/avatar/Avatar.vue'
+import AvatarImage from '@/components/ui/avatar/AvatarImage.vue'
 import AvatarFallback from '@/components/ui/avatar/AvatarFallback.vue'
 import AppInPlaceEditStatus from '@/components/AppInPlaceEdit/AppInPlaceEditStatus.vue'
 

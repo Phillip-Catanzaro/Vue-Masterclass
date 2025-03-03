@@ -1,19 +1,19 @@
 import {
   taskQuery,
   tasksWithProjectsQuery,
-  type TasksWithProjects,
-  type Task,
   updateTaskQuery
 } from '@/utils/supaQueries'
 import { useMemoize } from '@vueuse/core'
+import type { Task, TasksWithProjects } from '@/utils/supaQueries'
 
 export const useTasksStore = defineStore('tasks-store', () => {
   const tasks = ref<TasksWithProjects | null>(null)
   const task = ref<Task | null>(null)
   const loadTasks = useMemoize(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (id: string) => await tasksWithProjectsQuery
   )
-  const loadTask = useMemoize(async (id: string) => await taskQuery(id))
+  const loadTask = useMemoize(async (slug: string) => await taskQuery(slug))
 
   interface ValidateCacheParams {
     ref: typeof tasks | typeof task

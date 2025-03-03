@@ -2,8 +2,8 @@
 import { useCollabs } from '@/composables/collabs'
 import { useTasksStore } from '@/stores/loaders/tasks'
 
-const { slug } = useRoute('/tasks/[id]').params
-const slugVar = ref(Array.isArray(slug) ? slug[0] : slug)
+const { id } = useRoute('/tasks/[id]').params
+const idVar = Array.isArray(id) ? id[0] : id
 
 const tasksLoader = useTasksStore()
 const { task } = storeToRefs(tasksLoader)
@@ -16,7 +16,8 @@ watch(
   }
 )
 
-await getTask(slugVar.value)
+console.log(idVar)
+await getTask(idVar)
 
 const { getProfileByIds } = useCollabs()
 const collabs = task.value?.collaborators
