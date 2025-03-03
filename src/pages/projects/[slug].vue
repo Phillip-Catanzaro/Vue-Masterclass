@@ -3,7 +3,7 @@ import { useCollabs } from '@/composables/collabs'
 import { useProjectsStore } from '@/stores/loaders/projects'
 
 const { slug } = useRoute('/projects/[slug]').params
-const slugVar = ref(Array.isArray(slug) ? slug[0] : slug)
+const slugVar = Array.isArray(slug) ? slug[0] : slug
 
 const projectsLoader = useProjectsStore()
 const { project } = storeToRefs(projectsLoader)
@@ -16,7 +16,7 @@ watch(
   }
 )
 
-await getProject(slugVar.value)
+await getProject(slugVar)
 
 const { getProfileByIds } = useCollabs()
 const collabs = project.value?.collaborators
