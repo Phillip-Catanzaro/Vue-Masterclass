@@ -16,7 +16,6 @@ watch(
   }
 )
 
-console.log(idVar)
 await getTask(idVar)
 
 const { getProfileByIds } = useCollabs()
