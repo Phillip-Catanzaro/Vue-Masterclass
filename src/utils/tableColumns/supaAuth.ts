@@ -16,7 +16,7 @@ export const register = async (formData: RegisterForm) => {
       full_name: formData.firstName.concat(' ', formData.lastName)
     })
 
-    if (error) return console.log('Profiles error: ', error)
+    if (error) return console.log('Profiles err: ', error)
   }
 
   return true
@@ -33,6 +33,8 @@ export const login = async (formData: LoginForm) => {
 
 export const logout = async () => {
   const { error } = await supabase.auth.signOut()
+
   if (error) return console.log(error)
+
   return true
 }

@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth-store', () => {
       profile.value = data || null
     }
   }
+
   const setAuth = async (userSession: null | Session = null) => {
     if (!userSession) {
       user.value = null
@@ -49,6 +50,7 @@ export const useAuthStore = defineStore('auth-store', () => {
       }, 0)
     })
   }
+
   return {
     user,
     profile,
@@ -57,3 +59,7 @@ export const useAuthStore = defineStore('auth-store', () => {
     trackAuthChanges
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
+}
